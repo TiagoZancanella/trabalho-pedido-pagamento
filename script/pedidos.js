@@ -88,7 +88,7 @@ async function consultarPedidos() {
                         data-fornecedor="${pedido.fornecedor}"
                         data-dataPedido="${pedido.dataPedido}"
                     ><i class="fas fa-trash"></i> Cancelar </button>
-                    <button type="button" class="btn btn-success" id="botaoPagar">Pagar</button>
+                    <button type="button" class="btn btn-success botaoPagar">Pagar</button>
                 </td>`;
         const linha = document.createElement("tr");
         linha.innerHTML = colunas;
@@ -100,23 +100,24 @@ async function consultarPedidos() {
     });
 
     atribuirCliqueBotoesApagar();
+    atribuirCliqueBotoesPagar();
 }
 
 
 
 consultarPedidos();
 
-// -----------------------------------------------------------------------
-function botoesPagar() {
-    let botoesPagar = document.getElementById("botaoPagar" );
+// // -----------------------------------------------------------------------
+// function botoesPagar() {
+//     let botoesPagar = document.getElementById("botaoPagar" );
 
 
-}
-async function pagarPedido() {
-    console.log("Pagamento processado com sucesso!");
+// }
+// async function pagarPedido() {
+//     console.log("Pagamento processado com sucesso!");
     
-    alert("Seu pedido foi pago com sucesso!");
+//     alert("Seu pedido foi pago com sucesso!");
     
-}
+// }
 
-botoesPagar();
+// botoesPagar();
