@@ -25,7 +25,7 @@ async function apagarPedidos(evento) {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sim cancelar!",
+        confirmButtonText: "Sim, cancelar!",
         cancelButtonText: "Não",
         reverseButtons: true
     }).then((result) => {
@@ -88,12 +88,14 @@ async function consultarPedidos() {
                         data-fornecedor="${pedido.fornecedor}"
                         data-dataPedido="${pedido.dataPedido}"
                     ><i class="fas fa-trash"></i> Cancelar </button>
-                    <button type="button" class="btn btn-success id="botao-pagar">Pagar</button>
+                    <button type="button" class="btn btn-success" id="botaoPagar">Pagar</button>
                 </td>`;
         const linha = document.createElement("tr");
         linha.innerHTML = colunas;
         tbody.appendChild(linha);
 
+
+        
         console.log(pedido);
     });
 
@@ -105,38 +107,16 @@ async function consultarPedidos() {
 consultarPedidos();
 
 // -----------------------------------------------------------------------
+function botoesPagar() {
+    let botoesPagar = document.getElementById("botaoPagar" );
 
 
-
-// A função para atribuir o clique aos botões de pagar
-function atribuirCliqueBotoesPagar() {
-    let botoesPagar = document.getElementsByClassName("botao-pagar");
-
-    // Adiciona o evento de clique a cada botão com a classe "botao-pagar"
-    Array.from(botoesPagar).forEach((botao) => {
-        botao.addEventListener('click', pagarPedidos); // Alterado para chamar a função correta
-    });
 }
-
-// A função que será chamada quando o botão de pagar for clicado
-async function pagarPedidos(evento) {
-    const botaoClique = evento.target;  // O botão que foi clicado
-
-    // Exemplo de como você pode acessar o ID ou outro atributo do botão
-    const id = botaoClique.getAttribute("data-id"); // Exemplo de um atributo "data-id"
+async function pagarPedido() {
+    console.log("Pagamento processado com sucesso!");
     
-    // Mostrar o alerta de sucesso do SweetAlert2
-    Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Pagamento efetuado com sucesso",
-        showConfirmButton: false,
-        timer: 1500
-    });
-
-    // Aqui você pode adicionar qualquer lógica para continuar o pagamento, se necessário.
-    console.log("ID do pagamento:", id);  // Exemplo de como usar o id
+    alert("Seu pedido foi pago com sucesso!");
+    
 }
 
-// Chamada da função que atribui os cliques aos botões ao carregar a página
-atribuirCliqueBotoesPagar();
+botoesPagar();
