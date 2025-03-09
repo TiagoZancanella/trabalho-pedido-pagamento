@@ -1,79 +1,102 @@
+// Selecionando os campos de entrada por meio da classe CSS
+const campoProduto = document.querySelector(".produto");
+const campoQuantidade = document.querySelector(".quantidade");
+const campoFornecedor = document.querySelector(".fornecedor");
+const campoPedido = document.getElementsByClassName("dataPedido");
 
-
-
+// Obtendo o ID do pedido na URL
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 const idParaEditar = params.get("id");
-const urlAPI = "https://public.franciscosensaulas.com"
+const urlAPI = "https://public.franciscosensaulas.com";
 
-async function consultarPedidosPorId() {
-    const urlParaConsultarPedido = `${urlAPI}/api/v1/trabalho/pedidos/${idParaEditar}`
+// URL da API para consulta e alteração dos dados
+
+// Função para consultar os dados do pedido a partir do ID
+async function consultarDadosPedidosPorId() {
+    const urlParaConsultarPedido = `${urlAPI}/api/v1/trabalho/pedidos/${idParaEditar}`;
     console.log(urlParaConsultarPedido);
 
     const resposta = await fetch(urlParaConsultarPedido);
+
+    // Caso o pedido não seja encontrado
     if (resposta.ok == false) {
-        alert("Empresa não encontrada");
+        alert("Pedido não encontrado");
         window.location.href = "/pedidos.html";
-        return
-    }
-
-    const dadosPedidos = await resposta.json();
-    console.log(dadosPedidos);
-
-    campoNome.value = dadosPedidos.nome;
-    campoCnpj.value = dadosPedidos.cnpj;
-
-
-const produto = document.getElementById("produto");
-const quantidade = document.getElementById("quantidade");
-const valorTotal = document.getElementById("valorTotal");
-const fornecedor = document.getElementById("fornecedor");
-const dataPedido = document.getElementById("dataPedido");
-
-let botaoSalvar = document.getElementById("btn-salvar");
-botaoSalvar.addEventListener('click', salvar);
-
-async function salvar(e) {
-    e.preventDefault();
-
-   
-    if (produto.value.length < 3) {
-        alert("Deve inserir um produto");
-        return; 
-    }
-
-    if (produto.value.length > 20) {
-        alert("O nome do produto deve ter no máximo 20 caracteres");
         return;
     }
 
-   
-    const dados = {
-        produto: produto.value, 
-        quantidade: quantidade.value, 
-        valorTotal: valorTotal.value,
-        fornecedor: fornecedor.value,
-        dataPedido: dataPedido.value
+    // Pegando os dados do pedido e preenchendo os campos
+    const dadosPedidos = await resposta.json();
+    console.log(dadosPedidos);
+
+    // Preenchendo os campos com os dados recebidos
+    campoProduto.value = dadosPedidos.produto;
+    campoQuantidade.value = dadosPedidos.quantidade;
+    campoFornecedor.value = dadosPedidos.fornecedor;
+    campoPedido.value = dadosPedidos.dataPedido;
+}
+
+// Função para editar os dados do pedido
+async function editar(evento) {
+    evento.preventDefault(); // Evita o comportamento padrão do botão
+
+    // Pegando os valores inseridos nos campos
+    let produto = campoProduto.value;
+    let quantidade = campoQuantidade.value;
+    let fornecedor = campoFornecedor.value;
+    let dataPedido = campoPedido.value;
+
+    // Validação para garantir que os campos não estão vazios
+    if (!produto || !quantidade || !fornecedor || !dataPedido) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos obrigatórios',
+            text: 'Por favor, preencha todos os campos antes de salvar.',
+        });
+        return;
     }
 
+    // Estruturando os dados para enviar à API
+    const dados = {
+        produto: produto,
+        quantidade: quantidade,
+        fornecedor: fornecedor,
+        dataPedido: dataPedido,
+    };
 
-    let url = `${urlAPI}/api/v1/trabalho/pedidos/${id}`;
+    // URL da API para a atualização do pedido
+    let url = `${urlAPI}/api/v1/trabalho/pedidos/${idParaEditar}`;
 
-    
+    // Enviando os dados via PUT para a API
     const resposta = await fetch(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
+        body: JSON.stringify(dados),
     });
 
+    // Verificando a resposta da API e redirecionando ou mostrando um erro
     if (resposta.ok == false) {
-        alert("Não foi possível cadastrar")
+        const erro = await resposta.json();
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao salvar',
+            text: erro.message || 'Não foi possível salvar as alterações. Tente novamente.',
+        });
     } else {
-        location.href = '/index.html';
+        Swal.fire({
+            icon: 'success',
+            title: 'Alteração realizada',
+            text: 'As alterações foram salvas com sucesso.',
+        }).then(() => {
+            location.href = '/index.html'; // Redireciona para a lista de pedidos após a alteração
+        });
     }
 }
-}
-const botaoEditar = document.getElementById("botaoAlterar");
-botaoEditar.addEventListener("click", editar);
 
-consultarDadosEmpresaPorId();
+// Evento para capturar o clique no botão de salvar
+const botaoSalvar = document.getElementById("btn-salvar");
+botaoSalvar.addEventListener("click", editar);
+
+// Carregando os dados do pedido assim que a página for carregada
+consultarDadosPedidosPorId();

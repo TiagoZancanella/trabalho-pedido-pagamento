@@ -41,7 +41,7 @@ async function atribuirCliqueBotoesPagar() {
 }
 async function pagarPedido() {
     Swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Pagamento realizado",
         showConfirmButton: false,
