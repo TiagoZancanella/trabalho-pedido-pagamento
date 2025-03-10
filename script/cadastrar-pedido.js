@@ -47,5 +47,8 @@ async function salvar(e) {
     } else {
         location.href = '/pedido/index.html';
     }
+
+
+    
 }
 

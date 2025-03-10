@@ -91,7 +91,10 @@ async function editar(evento) {
         }).then(() => {
             location.href = '/index.html'; // Redireciona para a lista de pedidos após a alteração
         });
+
     }
+
+    
 }
 
 // Evento para capturar o clique no botão de salvar
