@@ -22,7 +22,7 @@ async function consultarDadosPedidosPorId() {
     // Caso o pedido não seja encontrado
     if (resposta.ok == false) {
         alert("Pedido não encontrado");
-        window.location.href = "/pedidos.html";
+        window.location.href = "/pedido/pedidos.html";
         return;
     }
 
@@ -89,7 +89,7 @@ async function editar(evento) {
             title: 'Alteração realizada',
             text: 'As alterações foram salvas com sucesso.',
         }).then(() => {
-            location.href = '/index.html'; // Redireciona para a lista de pedidos após a alteração
+            location.href = '/pedido/pedidos.html'; // Redireciona para a lista de pedidos após a alteração
         });
 
     }
